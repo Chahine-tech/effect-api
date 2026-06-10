@@ -4,11 +4,12 @@ Production-ready REST API with Effect, clean architecture, and end-to-end type s
 
 ## Stack
 
-- **Effect** — runtime, error handling, DI, tracing, logging
+- **Effect** — runtime, error handling, DI, tracing, metrics, PubSub
 - **@effect/platform** — HTTP server, typed API (HttpApi)
-- **Drizzle ORM** — schema + migrations (PostgreSQL)
+- **@effect/sql-pg** — PostgreSQL queries + migrations (no ORM)
 - **argon2** — password hashing
-- **pnpm workspaces** — monorepo (`contract` / `api` / `web`)
+- **oxlint** — fast linter
+- **pnpm workspaces** — monorepo (`contract` / `api`)
 
 ## Structure
 
@@ -19,9 +20,9 @@ packages/
     src/
       domain/         # ports (Context.Tag interfaces)
       application/    # use cases
-      infrastructure/ # adapters (DB, password)
+      infrastructure/ # adapters (DB, password, events, metrics)
       interface/      # HTTP handlers, middleware
-  web/        # future frontend (HttpApiClient ready)
+      migrate.ts      # standalone migration runner
 ```
 
 ## Quick start
@@ -41,8 +42,9 @@ Swagger UI → http://localhost:3000/docs
 
 ```bash
 pnpm dev            # dev server with watch
-pnpm test           # run all tests (unit + HTTP integration)
-pnpm db:generate    # generate migration from schema changes
+pnpm test           # unit + HTTP integration tests (in-memory, no DB)
+pnpm typecheck      # tsc --noEmit across all packages
+pnpm lint           # oxlint
 pnpm db:migrate     # apply migrations
 ```
 
@@ -57,9 +59,13 @@ NODE_ENV=production          # switches logger to JSON
 ## Features
 
 - Cookie-based auth (httpOnly session, server-side revocation)
-- Rate limiting (10 req/min per IP on auth routes)
+- Rate limiting per IP with `TestClock`-compatible implementation
+- `Effect.Cache` on `GetUserUseCase` (LRU, 5 min TTL)
+- Request batching (`RequestResolver.makeBatched`) for bulk user lookups
+- Metrics counters (`/metrics`) — registrations, logins, auth failures
+- PubSub event bus — `UserCreated` / `UserRemoved` with daemon worker
 - Request tracing with `Effect.withSpan`
+- Schema-validated SQL rows — `Schema.decodeUnknown` on every query result
 - Pretty logs in dev, JSON logs in prod
-- DB connection retry on startup (exponential backoff)
 - Effect DevTools compatible
-- 12 tests — unit (use cases) + HTTP integration (in-memory, no DB)
+- 16 tests — unit (use cases) + HTTP integration (in-memory, no DB)
