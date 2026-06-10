@@ -1,7 +1,7 @@
 import { HttpApiMiddleware, HttpApiSecurity } from "@effect/platform"
 import { Context } from "effect"
 import { Unauthorized } from "./errors.js"
-import { User } from "./schemas.js"
+import type { User } from "./schemas.js"
 
 export class CurrentUser extends Context.Tag("CurrentUser")<CurrentUser, User>() {}
 

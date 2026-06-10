@@ -1,5 +1,6 @@
-import { Context, Effect } from "effect"
-import { InternalError } from "@myapp/contract"
+import type { Effect } from "effect";
+import { Context } from "effect"
+import type { InternalError } from "@myapp/contract"
 
 export class PasswordService extends Context.Tag("PasswordService")<
   PasswordService,

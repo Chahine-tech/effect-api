@@ -1,5 +1,6 @@
-import { Context, Effect } from "effect"
-import { Conflict, InternalError, NotFound, User } from "@myapp/contract"
+import type { Effect } from "effect";
+import { Context } from "effect"
+import type { Conflict, InternalError, NotFound, User } from "@myapp/contract"
 
 export interface CreateUserInput {
   name: string

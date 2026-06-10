@@ -1,5 +1,5 @@
 import { Context, Effect, Layer } from "effect"
-import { InternalError } from "@myapp/contract"
+import type { InternalError } from "@myapp/contract"
 import { SessionRepository } from "../../domain/session.js"
 
 export class LogoutUseCase extends Context.Tag("LogoutUseCase")<

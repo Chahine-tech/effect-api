@@ -1,5 +1,5 @@
 import { Context, Effect, Layer } from "effect"
-import { InternalError, NotFound, User } from "@myapp/contract"
+import type { InternalError, NotFound, User } from "@myapp/contract"
 import { UserRepository } from "../../domain/user.js"
 
 export class GetUserUseCase extends Context.Tag("GetUserUseCase")<

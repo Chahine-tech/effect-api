@@ -1,5 +1,6 @@
 import { Context, Effect, Layer } from "effect"
-import { BadRequest, Conflict, InternalError, User } from "@myapp/contract"
+import type { Conflict, InternalError, User } from "@myapp/contract";
+import { BadRequest } from "@myapp/contract"
 import { PasswordService } from "../../domain/password.js"
 import { UserRepository } from "../../domain/user.js"
 

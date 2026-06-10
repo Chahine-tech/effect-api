@@ -1,5 +1,5 @@
 import { Effect, Layer, Ref } from "effect"
-import { InternalError, Unauthorized } from "@myapp/contract"
+import { Unauthorized } from "@myapp/contract"
 import { SessionRepository } from "../../domain/session.js"
 
 interface SessionRow {

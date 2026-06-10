@@ -1,5 +1,6 @@
-import { Context, Effect } from "effect"
-import { InternalError, Unauthorized } from "@myapp/contract"
+import type { Effect } from "effect";
+import { Context } from "effect"
+import type { InternalError, Unauthorized } from "@myapp/contract"
 
 export interface SessionMeta {
   ip: string

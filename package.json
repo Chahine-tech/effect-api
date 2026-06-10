@@ -6,6 +6,11 @@
     "dev": "pnpm --filter @myapp/api dev",
     "start": "pnpm --filter @myapp/api start",
     "db:generate": "pnpm --filter @myapp/api db:generate",
-    "db:migrate": "pnpm --filter @myapp/api db:migrate"
+    "db:migrate": "pnpm --filter @myapp/api db:migrate",
+    "lint": "./node_modules/.bin/oxlint --node-plugin packages",
+    "lint:fix": "./node_modules/.bin/oxlint --fix --node-plugin packages"
+  },
+  "devDependencies": {
+    "oxlint": "^1.69.0"
   }
 }

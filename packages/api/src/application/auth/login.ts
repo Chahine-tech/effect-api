@@ -1,5 +1,6 @@
 import { Context, Effect, Layer } from "effect"
-import { InternalError, Unauthorized } from "@myapp/contract"
+import type { InternalError} from "@myapp/contract";
+import { Unauthorized } from "@myapp/contract"
 import { PasswordService } from "../../domain/password.js"
 import { SessionRepository, type SessionMeta } from "../../domain/session.js"
 import { UserRepository } from "../../domain/user.js"

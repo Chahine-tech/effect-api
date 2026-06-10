@@ -9,14 +9,14 @@ interface UserRow {
   passwordHash: string
 }
 
+const toUser = (row: UserRow): User => new User({ id: row.id, name: row.name, email: row.email })
+
 export const makeInMemoryUserRepo = (initial: UserRow[] = []) =>
   Layer.effect(
     UserRepository,
     Effect.gen(function* () {
       const store = yield* Ref.make<UserRow[]>(initial)
       const nextId = yield* Ref.make(initial.length + 1)
-
-      const toUser = (row: UserRow): User => new User({ id: row.id, name: row.name, email: row.email })
 
       return {
         findById: (id) =>

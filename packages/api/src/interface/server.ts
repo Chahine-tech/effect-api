@@ -1,7 +1,7 @@
 import { DevTools } from "@effect/experimental"
 import { HttpApiBuilder, HttpApiSwagger, HttpMiddleware, HttpServer } from "@effect/platform"
 import { NodeHttpServer, NodeRuntime } from "@effect/platform-node"
-import { Effect, Layer, Logger, LogLevel } from "effect"
+import { Effect, Layer, Logger } from "effect"
 import { createServer } from "node:http"
 import { MyApi } from "@myapp/contract"
 

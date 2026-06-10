@@ -1,7 +1,6 @@
 import { HttpServerRequest } from "@effect/platform"
-import { Effect, Layer, Ref } from "effect"
+import { Context, Effect, Layer, Ref } from "effect"
 import { TooManyRequests } from "@myapp/contract"
-import { Context } from "effect"
 
 interface IpEntry {
   count: number

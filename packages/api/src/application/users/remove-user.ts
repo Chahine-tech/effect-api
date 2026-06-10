@@ -1,5 +1,5 @@
 import { Context, Effect, Layer } from "effect"
-import { InternalError, NotFound } from "@myapp/contract"
+import type { InternalError, NotFound } from "@myapp/contract"
 import { UserRepository } from "../../domain/user.js"
 
 export class RemoveUserUseCase extends Context.Tag("RemoveUserUseCase")<

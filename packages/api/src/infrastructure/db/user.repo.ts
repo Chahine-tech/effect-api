@@ -9,7 +9,7 @@ const toUser = (row: { id: number; name: string; email: string }): User =>
   new User({ id: row.id, name: row.name, email: row.email })
 
 const catchSql = (e: unknown) => {
-  const cause = (e as any)?.cause
+  const cause = (e as { cause?: { code?: string } })?.cause
   if (cause?.code === "23505") return new Conflict({ message: "Email already taken" })
   return new InternalError({ message: String(e) })
 }

@@ -1,0 +1,35 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "import"],
+  "env": {
+    "node": true
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "rules": {
+    "no-console": "warn",
+    "no-debugger": "error",
+    "no-underscore-dangle": ["warn", { "allow": ["_tag"] }],
+
+    "typescript/no-explicit-any": "warn",
+    "typescript/consistent-type-imports": "warn",
+    "typescript/no-unused-vars": "error",
+
+    "import/no-duplicates": "error",
+    "import/no-self-import": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.ts"],
+      "rules": {
+        "typescript/no-explicit-any": "off",
+        "no-console": "off",
+        "no-underscore-dangle": "off"
+      }
+    }
+  ],
+  "ignorePatterns": ["**/dist/**", "**/drizzle/**"]
+}
