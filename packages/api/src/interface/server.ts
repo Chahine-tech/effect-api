@@ -18,6 +18,7 @@ import { SessionRepositoryLive } from "../infrastructure/db/session.repo.js"
 import { UserRepositoryLive } from "../infrastructure/db/user.repo.js"
 import { EventWorkerLive, UserEventBusLive } from "../infrastructure/events.js"
 import { PasswordServiceLive } from "../infrastructure/password.js"
+import { OtlpLive } from "../infrastructure/telemetry.js"
 
 import { AuthHandlerLive } from "./handlers/auth.handler.js"
 import { HealthHandlerLive } from "./handlers/health.handler.js"
@@ -65,6 +66,7 @@ HttpApiBuilder.serve(HttpMiddleware.logger).pipe(
   Layer.provide(UserEventBusLive),
   HttpServer.withLogAddress,
   Layer.provide(ServerLive),
+  Layer.provide(OtlpLive),
   Layer.provide(DevTools.layer()),
   Layer.provide(LoggerLive),
   Layer.launch,
