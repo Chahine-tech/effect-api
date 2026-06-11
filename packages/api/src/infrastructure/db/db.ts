@@ -1,6 +1,9 @@
 import { PgClient } from "@effect/sql-pg"
-import { Config, Redacted } from "effect"
+import { Config, Redacted, Schema } from "effect"
 
 export const SqlClientLive = PgClient.layerConfig({
-  url: Config.map(Config.string("DATABASE_URL"), Redacted.make),
+  url: Config.map(
+    Schema.Config("DATABASE_URL", Schema.NonEmptyString),
+    Redacted.make
+  ),
 })

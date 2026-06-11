@@ -24,18 +24,20 @@ export const LoginUseCaseLive = Layer.effect(
     const sessionRepo = yield* SessionRepository
     const passwordService = yield* PasswordService
 
+    const login = Effect.fn("LoginUseCase")(function* (input: LoginInput) {
+      yield* Effect.annotateCurrentSpan("email", input.email)
+      const { user, passwordHash } = yield* userRepo.findByEmailWithHash(input.email).pipe(
+        Effect.mapError(() => new Unauthorized({ message: "Invalid credentials" }))
+      )
+      const valid = yield* passwordService.verify(input.password, passwordHash)
+      if (!valid) return yield* Effect.fail(new Unauthorized({ message: "Invalid credentials" }))
+      return yield* sessionRepo.create(user.id, input.meta)
+    })
+
     return (input) =>
-      Effect.gen(function* () {
-        const { user, passwordHash } = yield* userRepo.findByEmailWithHash(input.email).pipe(
-          Effect.mapError(() => new Unauthorized({ message: "Invalid credentials" }))
-        )
-        const valid = yield* passwordService.verify(input.password, passwordHash)
-        if (!valid) return yield* Effect.fail(new Unauthorized({ message: "Invalid credentials" }))
-        return yield* sessionRepo.create(user.id, input.meta)
-      }).pipe(
+      login(input).pipe(
         Effect.tap(() => Metric.increment(loginsTotal)),
-        Effect.tapError(() => Metric.increment(authFailuresTotal)),
-        Effect.withSpan("LoginUseCase", { attributes: { email: input.email } })
+        Effect.tapError(() => Metric.increment(authFailuresTotal))
       )
   })
 )

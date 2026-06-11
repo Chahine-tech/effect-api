@@ -14,10 +14,10 @@ export const RemoveUserUseCaseLive = Layer.effect(
     const userRepo = yield* UserRepository
     const eventBus = yield* UserEventBus
 
-    return (id) =>
-      userRepo.remove(id).pipe(
-        Effect.tap(() => PubSub.publish(eventBus, { _tag: "UserRemoved", userId: id })),
-        Effect.withSpan("RemoveUserUseCase", { attributes: { id } })
-      )
+    return Effect.fn("RemoveUserUseCase")(function* (id: number) {
+      yield* Effect.annotateCurrentSpan("id", id)
+      yield* userRepo.remove(id)
+      yield* PubSub.publish(eventBus, { _tag: "UserRemoved", userId: id })
+    })
   })
 )

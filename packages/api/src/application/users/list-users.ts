@@ -11,6 +11,6 @@ export const ListUsersUseCaseLive = Layer.effect(
   ListUsersUseCase,
   Effect.gen(function* () {
     const userRepo = yield* UserRepository
-    return () => userRepo.list().pipe(Effect.withSpan("ListUsersUseCase"))
+    return Effect.fn("ListUsersUseCase")(() => userRepo.list())
   })
 )

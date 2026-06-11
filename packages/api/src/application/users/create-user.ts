@@ -24,15 +24,15 @@ export const CreateUserUseCaseLive = Layer.effect(
     const passwordService = yield* PasswordService
     const eventBus = yield* UserEventBus
 
-    return (input) =>
-      Effect.gen(function* () {
-        if (input.password.length < 8)
-          return yield* Effect.fail(new BadRequest({ message: "Password must be at least 8 characters" }))
-        const passwordHash = yield* passwordService.hash(input.password)
-        const user = yield* userRepo.create({ name: input.name, email: input.email, passwordHash })
-        yield* PubSub.publish(eventBus, { _tag: "UserCreated", userId: user.id, email: input.email })
-        yield* Metric.increment(registrationsTotal)
-        return user
-      }).pipe(Effect.withSpan("CreateUserUseCase", { attributes: { email: input.email } }))
+    return Effect.fn("CreateUserUseCase")(function* (input: CreateUserInput) {
+      yield* Effect.annotateCurrentSpan("email", input.email)
+      if (input.password.length < 8)
+        return yield* Effect.fail(new BadRequest({ message: "Password must be at least 8 characters" }))
+      const passwordHash = yield* passwordService.hash(input.password)
+      const user = yield* userRepo.create({ name: input.name, email: input.email, passwordHash })
+      yield* PubSub.publish(eventBus, { _tag: "UserCreated", userId: user.id, email: input.email })
+      yield* Metric.increment(registrationsTotal)
+      return user
+    })
   })
 )

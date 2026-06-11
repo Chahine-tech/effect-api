@@ -1,4 +1,4 @@
-import type { Effect } from "effect";
+import type { Effect } from "effect"
 import { Context } from "effect"
 import type { InternalError, Unauthorized } from "@myapp/contract"
 

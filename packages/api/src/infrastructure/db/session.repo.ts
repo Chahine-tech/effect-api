@@ -2,6 +2,7 @@ import { SqlClient } from "@effect/sql"
 import { Effect, Layer, Schema } from "effect"
 import { Unauthorized } from "@myapp/contract"
 import { SessionRepository } from "../../domain/session.js"
+import { SqlClientLive } from "./db.js"
 import { decodeMany, sqlError } from "./sql-helpers.js"
 
 const SessionRow = Schema.Struct({
@@ -66,4 +67,4 @@ export const SessionRepositoryLive = Layer.effect(
         ),
     }
   })
-)
+).pipe(Layer.provide(SqlClientLive))

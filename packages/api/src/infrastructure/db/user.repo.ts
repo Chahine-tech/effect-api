@@ -2,6 +2,7 @@ import { SqlClient } from "@effect/sql"
 import { Effect, Layer, Schema } from "effect"
 import { InternalError, NotFound, User } from "@myapp/contract"
 import { UserRepository, type CreateUserInput } from "../../domain/user.js"
+import { SqlClientLive } from "./db.js"
 import { decodeMany, sqlConflictOrError, sqlError } from "./sql-helpers.js"
 
 const UserRowPublic = Schema.Struct({
@@ -103,4 +104,4 @@ export const UserRepositoryLive = Layer.effect(
       },
     }
   })
-)
+).pipe(Layer.provide(SqlClientLive))

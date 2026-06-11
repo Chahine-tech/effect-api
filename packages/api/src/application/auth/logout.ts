@@ -11,6 +11,6 @@ export const LogoutUseCaseLive = Layer.effect(
   LogoutUseCase,
   Effect.gen(function* () {
     const sessionRepo = yield* SessionRepository
-    return (token) => sessionRepo.revoke(token).pipe(Effect.withSpan("LogoutUseCase"))
+    return Effect.fn("LogoutUseCase")((token: string) => sessionRepo.revoke(token))
   })
 )

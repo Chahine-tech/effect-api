@@ -43,9 +43,9 @@ export const GetUserBatchedUseCaseLive = Layer.effect(
         )
     )
 
-    return (id) =>
-      Effect.request(GetUserByIdReq({ id }), resolver).pipe(
-        Effect.withSpan("GetUserBatchedUseCase", { attributes: { id } })
-      )
+    return Effect.fn("GetUserBatchedUseCase")(function* (id: number) {
+      yield* Effect.annotateCurrentSpan("id", id)
+      return yield* Effect.request(GetUserByIdReq({ id }), resolver)
+    })
   })
 )

@@ -1,4 +1,4 @@
-import { HttpApiBuilder, HttpServerRequest } from "@effect/platform"
+import { Cookies, HttpApiBuilder, HttpServerRequest } from "@effect/platform"
 import { Effect } from "effect"
 import { MyApi, SESSION_COOKIE_SCHEME } from "@myapp/contract"
 import { LoginUseCase } from "../../application/auth/login.js"
@@ -38,11 +38,10 @@ export const AuthHandlerLive = HttpApiBuilder.group(MyApi, "auth", (handlers) =>
     .handle("logout", (_) =>
       Effect.gen(function* () {
         const req = yield* HttpServerRequest.HttpServerRequest
-        const cookieHeader = req.headers["cookie"] ?? ""
-        const match = cookieHeader.match(/session=([^;]+)/)
-        if (match?.[1]) {
+        const token = Cookies.parseHeader(req.headers["cookie"] ?? "")["session"]
+        if (token) {
           const logout = yield* LogoutUseCase
-          yield* logout(match[1])
+          yield* logout(token)
         }
         yield* HttpApiBuilder.securitySetCookie(SESSION_COOKIE_SCHEME, "", { maxAge: 0, path: "/" })
       })

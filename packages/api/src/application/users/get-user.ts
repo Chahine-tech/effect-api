@@ -16,7 +16,10 @@ export const GetUserUseCaseLive = Layer.scoped(
       timeToLive: Duration.minutes(5),
       lookup: (id: number) => userRepo.findById(id),
     })
-    return (id) =>
-      cache.get(id).pipe(Effect.withSpan("GetUserUseCase", { attributes: { id } }))
+
+    return Effect.fn("GetUserUseCase")(function* (id: number) {
+      yield* Effect.annotateCurrentSpan("id", id)
+      return yield* cache.get(id)
+    })
   })
 )
