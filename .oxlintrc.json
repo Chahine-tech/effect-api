@@ -20,7 +20,8 @@
 
     "import/no-duplicates": "error",
     "import/no-self-import": "error",
-    "import/namespace": "off"
+    "import/namespace": "off",
+    "import/no-unassigned-import": ["warn", { "allow": ["**/*.css"] }]
   },
   "overrides": [
     {

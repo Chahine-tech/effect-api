@@ -138,7 +138,7 @@ describe("HTTP Integration", () => {
       const c = yield* client
 
       yield* c.auth.register({ payload: { name: "Charlie", email, password: "password123" } })
-      const err = yield* c.auth.login({ payload: { email, password: "wrong" } }).pipe(Effect.flip)
+      const err = yield* c.auth.login({ payload: { email, password: "wrongpassword" } }).pipe(Effect.flip)
       expect(err._tag).toBe("Unauthorized")
     })
   )
